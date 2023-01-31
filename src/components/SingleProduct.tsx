@@ -1,18 +1,17 @@
 import { Card, Button } from 'react-bootstrap'
-import { useCartState } from '../Context'
+import { useCartState } from '../context/Context'
 import { ProductModel } from './model'
-//import { CartState } from '../context/Context'
-//import Rating from './Rating'
+import Rating from './Rating'
+import './style.css'
 
 interface productProps {
   prod: ProductModel
 }
 const SingleProduct: React.FC<productProps> = ({ prod }) => {
-  const { cart, setCart } = useCartState()
-  // const {
-  //   state: { cart },
-  //   dispatch,
-  // } = CartState()
+  const {
+    state: { cart },
+    dispatch,
+  } = useCartState()
 
   return (
     <div className='products'>
@@ -21,40 +20,41 @@ const SingleProduct: React.FC<productProps> = ({ prod }) => {
         <Card.Body>
           <Card.Title>{prod.name}</Card.Title>
           <Card.Subtitle style={{ paddingBottom: 10 }}>
-            <span>₹ {prod.price.split('.')[0]}</span>
+            <span>${prod.price.split('.')[0]}</span>
             {prod.fastDelivery ? (
               <div>Fast Delivery</div>
             ) : (
               <div>4 days delivery</div>
             )}
-            {/* <Rating rating={prod.ratings} /> */}
+            <Rating rating={+prod.ratings} />
           </Card.Subtitle>
           {cart.some((p) => p.id === prod.id) ? (
             <Button
               variant='danger'
-              onClick={
-                () => setCart(cart.filter((c) => c.id !== prod.id))
-                // dispatch({
-                //   type: 'REMOVE_FROM_CART',
-                //   payload: prod,
-                // })
-              }
+              onClick={() => {
+                console.log(prod)
+
+                dispatch({
+                  type: 'REMOVE_FROM_CART',
+                  payload: prod,
+                })
+              }}
             >
               Remove from Cart
             </Button>
           ) : (
             <Button
               onClick={() => {
-                console.log(cart)
-                setCart([...cart, prod])
-                // dispatch({
-                //   type: 'ADD_TO_CART',
-                //   payload: prod,
-                // })
+                console.log(prod)
+
+                dispatch({
+                  type: 'ADD_TO_CART',
+                  payload: prod,
+                })
               }}
-              //disabled={!prod.inStock}
+              disabled={!prod.inStock}
             >
-              'Add to Cart'{!prod.inStock ? 'Out of Stock' : 'Add to Cart'}
+              {!prod.inStock ? 'Out of Stock' : 'Add to Cart'}
             </Button>
           )}
         </Card.Body>

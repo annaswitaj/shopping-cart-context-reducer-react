@@ -9,11 +9,16 @@ import {
 } from 'react-bootstrap'
 import Container from 'react-bootstrap/esm/Container'
 import { FaShoppingCart } from 'react-icons/fa'
+import { AiFillDelete } from 'react-icons/ai'
 import { Link } from 'react-router-dom'
-import { useCartState } from '../Context'
+import { useCartState } from '../context/Context'
+import './style.css'
 
 const Header: React.FC = () => {
-  const { cart } = useCartState()
+  const {
+    state: { cart },
+    dispatch,
+  } = useCartState()
 
   return (
     <Navbar bg='dark' variant='dark' style={{ height: 80 }}>
@@ -21,9 +26,7 @@ const Header: React.FC = () => {
         <Navbar.Brand>
           <Link to='/'>Shopping cart</Link>
         </Navbar.Brand>
-        <Navbar.Brand>
-          <Link to='/cart'>Cart ({cart.length})</Link>
-        </Navbar.Brand>
+
         <Navbar.Text className='search'>
           <FormControl
             style={{ width: 500 }}
@@ -36,11 +39,11 @@ const Header: React.FC = () => {
           <Dropdown align='end'>
             <Dropdown.Toggle variant='success'>
               <FaShoppingCart color='white' fontSize='25px' />
-              <Badge>10</Badge>
+              <Badge bg='success'>{cart.length}</Badge>
             </Dropdown.Toggle>
 
             <Dropdown.Menu style={{ minWidth: 370 }}>
-              {/* {cart.length > 0 ? (
+              {cart.length > 0 ? (
                 <>
                   {cart.map((prod) => (
                     <span className='cartitem' key={prod.id}>
@@ -51,7 +54,7 @@ const Header: React.FC = () => {
                       />
                       <div className='cartItemDetail'>
                         <span>{prod.name}</span>
-                        <span>₹ {prod.price.split('.')[0]}</span>
+                        <span>$ {prod.price.split('.')[0]}</span>
                       </div>
                       <AiFillDelete
                         fontSize='20px'
@@ -72,8 +75,8 @@ const Header: React.FC = () => {
                   </Link>
                 </>
               ) : (
-              )} */}
-              <span style={{ padding: 10 }}>Cart is Empty!</span>
+                <span style={{ padding: 10 }}>Cart is Empty!</span>
+              )}
             </Dropdown.Menu>
           </Dropdown>
         </Nav>
