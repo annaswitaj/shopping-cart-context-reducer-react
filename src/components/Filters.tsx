@@ -1,16 +1,17 @@
 import { useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import { useCartState } from '../context/Context'
+import { sorting } from './model'
 import Rating from './Rating'
 
 const Filters: React.FC = () => {
   const [rate, setRate] = useState(3)
-  // const {
-  //   productDispatch,
-  //   productState: { byStock, byFastDelivery, sort, byRating },
-  // } = useCartState()
+  const {
+    filterProductDispatch,
+    filterProductState: { byStock, byFastDelivery, sort, byRating },
+  } = useCartState()
 
-  // make state for rating
+  console.log(byStock, byFastDelivery, sort, byRating)
 
   return (
     <div className='filters'>
@@ -22,13 +23,13 @@ const Filters: React.FC = () => {
           name='group1'
           type='radio'
           id={`inline-1`}
-          // onChange={() =>
-          //   productDispatch({
-          //     type: 'SORT_BY_PRICE',
-          //     payload: 'lowToHigh',
-          //   })
-          // }
-          // checked={sort === 'lowToHigh' ? true : false}
+          onChange={() =>
+            filterProductDispatch({
+              type: 'SORT_BY_PRICE',
+              payload: sorting[0],
+            })
+          }
+          checked={sort === sorting[0] ? true : false}
         />
       </span>
       <span>
@@ -38,13 +39,13 @@ const Filters: React.FC = () => {
           name='group1'
           type='radio'
           id={`inline-2`}
-          // onChange={() =>
-          //   productDispatch({
-          //     type: 'SORT_BY_PRICE',
-          //     payload: 'highToLow',
-          //   })
-          // }
-          // checked={sort === 'highToLow' ? true : false}
+          onChange={() =>
+            filterProductDispatch({
+              type: 'SORT_BY_PRICE',
+              payload: sorting[1],
+            })
+          }
+          checked={sort === sorting[1] ? true : false}
         />
       </span>
       <span>
@@ -54,12 +55,12 @@ const Filters: React.FC = () => {
           name='group1'
           type='checkbox'
           id={`inline-3`}
-          // onChange={() =>
-          //   productDispatch({
-          //     type: 'FILTER_BY_STOCK',
-          //   })
-          // }
-          // checked={byStock}
+          onChange={() =>
+            filterProductDispatch({
+              type: 'FILTER_BY_STOCK',
+            })
+          }
+          checked={byStock}
         />
       </span>
       <span>
@@ -69,33 +70,36 @@ const Filters: React.FC = () => {
           name='group1'
           type='checkbox'
           id={`inline-4`}
-          // onChange={() =>
-          //   productDispatch({
-          //     type: 'FILTER_BY_DELIVERY',
-          //   })
-          // }
-          // checked={byFastDelivery}
+          onChange={() =>
+            filterProductDispatch({
+              type: 'FILTER_BY_DELIVERY',
+            })
+          }
+          checked={byFastDelivery}
         />
       </span>
       <span>
         <label style={{ paddingRight: 10 }}>Rating: </label>
         <Rating
           rating={rate}
-          onClick={(i) => setRate(i + 1)}
+          onClick={(i) => {
+            setRate(i + 1)
+            filterProductDispatch({
+              type: 'FILTER_BY_RATING',
+              payload: i + 1,
+            })
+          }}
           style={{ cursor: 'pointer' }}
         />
       </span>
-      {/* // productDispatch({
-           //   type: 'FILTER_BY_RATING',
-           //   payload: i + 1,
-           // }) */}
+
       <Button
         variant='light'
-        // onClick={() =>
-        //   productDispatch({
-        //     type: 'CLEAR_FILTERS',
-        //   })
-        // }
+        onClick={() =>
+          filterProductDispatch({
+            type: 'CLEAR_FILTERS',
+          })
+        }
       >
         Clear Filters
       </Button>

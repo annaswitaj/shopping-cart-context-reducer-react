@@ -32,8 +32,6 @@ const SingleProduct: React.FC<productProps> = ({ prod }) => {
             <Button
               variant='danger'
               onClick={() => {
-                console.log(prod)
-
                 dispatch({
                   type: 'REMOVE_FROM_CART',
                   payload: prod,
@@ -45,8 +43,6 @@ const SingleProduct: React.FC<productProps> = ({ prod }) => {
           ) : (
             <Button
               onClick={() => {
-                console.log(prod)
-
                 dispatch({
                   type: 'ADD_TO_CART',
                   payload: prod,

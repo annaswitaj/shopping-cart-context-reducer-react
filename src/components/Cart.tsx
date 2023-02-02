@@ -34,7 +34,7 @@ const Cart: React.FC = () => {
                   <Rating rating={+prod.ratings} />
                 </Col>
                 <Col md={2}>
-                  <Form.Control
+                  <Form.Select
                     as='select'
                     value={prod.qty}
                     onChange={(e) =>
@@ -47,10 +47,10 @@ const Cart: React.FC = () => {
                       })
                     }
                   >
-                    {[...Array(prod.inStock)].map((x) => (
-                      <option key={x + 1}>{x + 1}</option>
-                    ))}
-                  </Form.Control>
+                    {Array.from(Array(+prod.inStock).keys()).map((x) => {
+                      return <option key={x + 1}>{x + 1}</option>
+                    })}
+                  </Form.Select>
                 </Col>
                 <Col md={2}>
                   <Button
@@ -73,7 +73,7 @@ const Cart: React.FC = () => {
       </div>
       <div className='filters summary'>
         <span className='title'>Subtotal ({cart.length}) items</span>
-        <span style={{ fontWeight: 700, fontSize: 20 }}>Total: ₹ {total}</span>
+        <span style={{ fontWeight: 700, fontSize: 20 }}>Total: $ {total}</span>
         <Button type='button' disabled={cart.length === 0}>
           Proceed to Checkout
         </Button>

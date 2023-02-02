@@ -18,6 +18,7 @@ const Header: React.FC = () => {
   const {
     state: { cart },
     dispatch,
+    filterProductDispatch,
   } = useCartState()
 
   return (
@@ -32,6 +33,12 @@ const Header: React.FC = () => {
             style={{ width: 500 }}
             placeholder='Search a product'
             className='m-auto'
+            onChange={(e) => {
+              filterProductDispatch({
+                type: 'FILTER_BY_SEARCH',
+                payload: e.target.value,
+              })
+            }}
           />
         </Navbar.Text>
 

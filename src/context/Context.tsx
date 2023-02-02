@@ -1,17 +1,24 @@
-import React, { createContext, useContext, useReducer, useState } from 'react'
+import React, { createContext, useContext, useReducer } from 'react'
 import {
-  CartAction,
   CartProductsModel,
+  FilterProductsModel,
   ProductModel,
 } from '../components/model'
 import { faker } from '@faker-js/faker'
-import { cartReducer } from './Reducers'
+import {
+  CartAction,
+  cartReducer,
+  FilterProductAction,
+  filterProductReducer,
+} from './Reducers'
 
 faker.seed(99)
 
 interface CartContextProvider {
   state: CartProductsModel
   dispatch: React.Dispatch<CartAction>
+  filterProductState: FilterProductsModel
+  filterProductDispatch: React.Dispatch<FilterProductAction>
 }
 
 export const CartContext = createContext<CartContextProvider | null>(null)
@@ -35,14 +42,28 @@ const Context: React.FC<Props> = ({ children }) => {
     }),
   }))
 
-  const initialCartProductState: CartProductsModel = {
+  const initialCartState: CartProductsModel = {
     products: products,
     cart: [],
   }
-  const [state, dispatch] = useReducer(cartReducer, initialCartProductState)
+  const [state, dispatch] = useReducer(cartReducer, initialCartState)
+
+  const initialFilterProductState: FilterProductsModel = {
+    byStock: false,
+    byFastDelivery: false,
+    byRating: 0,
+    searchQuery: '',
+    sort: null,
+  }
+  const [filterProductState, filterProductDispatch] = useReducer(
+    filterProductReducer,
+    initialFilterProductState
+  )
 
   return (
-    <CartContext.Provider value={{ state, dispatch }}>
+    <CartContext.Provider
+      value={{ state, dispatch, filterProductState, filterProductDispatch }}
+    >
       {children}
     </CartContext.Provider>
   )
